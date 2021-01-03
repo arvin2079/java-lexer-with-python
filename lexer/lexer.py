@@ -220,11 +220,3 @@ def lex(input_file_address: str):
             if token.tok_key == constants.S_EOF:
                 break
 
-## TODO : write token class and return list of tokens
-## TODO : change upper gettoken method with switch case
-## TODO : complete other states of gettoken method
-## TODO : complete other methods
-
-## TODO : div or comment
-## TODO : floating point numbers
-## TODO : '.'
