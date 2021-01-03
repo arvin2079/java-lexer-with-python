@@ -40,11 +40,9 @@ def identity_or_num(err_line, err_col):
                 is_floating_point = True
             if current_ch.isnumeric():
                 content += current_ch
-            elif current_ch.isspace():
-                break
             else:
-                print_error(err_line, err_col, 'error : wrong format floatinpoint number!')
-                exit(1)
+                break
+
         if len(content) == 0:
             print_error(err_line, err_col, "format exeption in recognizing number!")
         if is_floating_point:
@@ -56,13 +54,13 @@ def identity_or_num(err_line, err_col):
         content += current_ch
         while True:
             get_next_ch()
-            if current_ch.isalpha() or current_ch == '_':
+            if current_ch.isalnum() or current_ch == '_':
                 content += current_ch
-            elif current_ch.isspace():
-                break
             else:
-                print_error(err_line, err_col, 'error : wrong format identifier!')
-                exit(1)
+                break
+            # else:
+            #     print_error(err_line, err_col, 'error : wrong format identifier!')
+            #     exit(1)
         if len(content) == 0:
             print_error(err_line, err_col, "format exeption in recognizing identifier!")
         if content in constants.key_words:
@@ -110,12 +108,12 @@ def expect_char(err_line, err_col):
     return constants.S_Char, err_line, err_col, char
 
 
-def expect_follow(err_line, err_col, if_no_match_found, **expects):
+def expect_follow(err_line, err_col, if_no_match_found, expects: map):
     get_next_ch()
-    for expect, symbol in expects:
+    for expect in expects:
         if current_ch == expect:
             get_next_ch()
-            return symbol, err_line, err_col
+            return expects[expect], err_line, err_col
 
     if if_no_match_found == constants.S_EOF:
         print_error(err_line, err_col, "error: unrecognized character: (%d) '%c'" % (ord(current_ch), current_ch))
@@ -124,17 +122,16 @@ def expect_follow(err_line, err_col, if_no_match_found, **expects):
 
 
 class Token:
-    def __init__(self, tok_key, line, col, desc):
+    def __init__(self, tok_key, line, col):
         self.tok_key = tok_key
         self.line = line
         self.col = col
-        self.desc = desc
 
-    def __str__(self):
-        value = f'{self.tok_key} - {self.line} - {self.col}'
-        if self.desc:
-            value += f' - {self.desc}'
-        return value
+    def print(self, desc=None):
+        value = f'{constants.symbol_values[self.tok_key]} - line: {self.line} - col: {self.col}'
+        if desc:
+            value += f' - {desc}'
+        print(value)
 
 
 def gettok():
@@ -189,6 +186,8 @@ def gettok():
         return expect_follow(err_line, err_col, constants.S_Or, {
             '|': constants.S_Or,
         })
+    # elif current_ch == '.':
+    #     return expect_follow(err_line, err_col, constants.S_Dot, {})
     elif current_ch == '/':
         return div_or_comment(err_line, err_col)
     elif current_ch == '"':
@@ -200,6 +199,7 @@ def gettok():
         get_next_ch()
         return sym, err_line, err_col
     else:
+
         return identity_or_num(err_line, err_col)
 
 
@@ -216,9 +216,10 @@ def lex(input_file_address: str):
                     token.tok_key == constants.S_Float or\
                     token.tok_key == constants.S_Identifier or\
                     token.tok_key == constants.S_String:
-                token.desc = t[3]
-
-            print(token)
+                if len(t) > 3:
+                    token.print(desc=t[3])
+            else:
+                token.print()
 
             if token.tok_key == constants.S_EOF:
                 break
@@ -230,3 +231,4 @@ def lex(input_file_address: str):
 
 ## TODO : div or comment
 ## TODO : floating point numbers
+## TODO : '.'
