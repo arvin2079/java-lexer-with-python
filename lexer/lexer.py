@@ -58,9 +58,7 @@ def identity_or_num(err_line, err_col):
                 content += current_ch
             else:
                 break
-            # else:
-            #     print_error(err_line, err_col, 'error : wrong format identifier!')
-            #     exit(1)
+
         if len(content) == 0:
             print_error(err_line, err_col, "format exeption in recognizing identifier!")
         if content in constants.key_words:
@@ -186,8 +184,6 @@ def gettok():
         return expect_follow(err_line, err_col, constants.S_Or, {
             '|': constants.S_Or,
         })
-    # elif current_ch == '.':
-    #     return expect_follow(err_line, err_col, constants.S_Dot, {})
     elif current_ch == '/':
         return div_or_comment(err_line, err_col)
     elif current_ch == '"':
