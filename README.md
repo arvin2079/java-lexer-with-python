@@ -2,7 +2,7 @@
 
 
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-orange.svg)](https://opensource.org/licenses/) [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/arvin2079/atomic-design-ui/blob/master/LICENSEs)
-# Java Lexer With Python
+# Java Lexical Analyzer With Python
 
 ### License
 The MIT License (MIT)
