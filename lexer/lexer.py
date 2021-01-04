@@ -69,20 +69,20 @@ def identity_or_num(err_line, err_col):
         exit(1)
 
 
+## only for multiline comments
 def div_or_comment(err_line, err_col):
-    if current_ch != '/':
-        while True:
-            if current_ch == '\n':
-                get_next_ch()
-                break
-
-    elif current_ch == '*':
+    get_next_ch()
+    if current_ch == '*':
         while True:
             get_next_ch()
+            if not current_ch:
+                print_error(err_line, err_col, 'reach end of the file and comment does not finished!')
             if current_ch == '*':
-                if current_ch == '/':
+                if get_next_ch() == '/':
+                    get_next_ch()
                     break
     else:
+        get_next_ch()
         return constants.S_Div, err_line, err_col
 
 
@@ -94,7 +94,7 @@ def expect_string(err_line, err_col):
         text += current_ch
 
     get_next_ch()
-    return constants.S_String, err_line, err_col, text
+    return constants.S_double_quote_string, err_line, err_col, text
 
 
 def expect_char(err_line, err_col):
@@ -103,7 +103,7 @@ def expect_char(err_line, err_col):
         print_error(err_line, err_col, 'error : wrong format character')
         exit(1)
     get_next_ch()
-    return constants.S_Char, err_line, err_col, char
+    return constants.S_Character, err_line, err_col, char
 
 
 def expect_follow(err_line, err_col, if_no_match_found, expects: map):
@@ -188,14 +188,13 @@ def gettok():
         return div_or_comment(err_line, err_col)
     elif current_ch == '"':
         return expect_string(err_line, err_col)
-    elif current_ch == '"':
+    elif current_ch == "'":
         return expect_char(err_line, err_col)
     elif current_ch in constants.symbols:
         sym = constants.symbols[current_ch]
         get_next_ch()
         return sym, err_line, err_col
     else:
-
         return identity_or_num(err_line, err_col)
 
 
@@ -206,17 +205,19 @@ def lex(input_file_address: str):
         input_file = file
         while True:
             t = gettok()
-            token = Token(tok_key=t[0], line=t[1], col=t[2])
+            if t:
+                token = Token(tok_key=t[0], line=t[1], col=t[2])
+                if token.tok_key == constants.S_Int or\
+                        token.tok_key == constants.S_Float or\
+                        token.tok_key == constants.S_Identifier or\
+                        token.tok_key == constants.S_String:
+                    if len(t) == 4:
+                        token.print(desc=t[3])
+                    else:
+                        token.print()
+                else:
+                    token.print()
 
-            if token.tok_key == constants.S_Int or\
-                    token.tok_key == constants.S_Float or\
-                    token.tok_key == constants.S_Identifier or\
-                    token.tok_key == constants.S_String:
-                if len(t) > 3:
-                    token.print(desc=t[3])
-            else:
-                token.print()
-
-            if token.tok_key == constants.S_EOF:
-                break
+                if token.tok_key == constants.S_EOF:
+                    break
 

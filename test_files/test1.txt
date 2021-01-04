@@ -1,7 +1,12 @@
-class Test {
+public class Alphabet {
+
     public static void main(String[] args) {
-        for (int i = 0; i < args.length; i++)
-            System.out.print(i == 0.56 ? args[i] : " " + args[i]);
-        System.out.println();
+
+        char c = '*';
+
+        if( (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+            System.out.println(c + " is an alphabet.");
+        else
+            System.out.println(c + " is not an alphabet.");
     }
 }

@@ -14,7 +14,7 @@ S_Protected, S_Throw, S_Throws, S_Import, S_Enum, S_Return, S_Transient, S_Try, 
 S_Interface, S_Static, S_Void, S_Class, S_Finally, S_Super, S_While, \
 S_Int, S_Double, S_Float, S_String, S_Boolean, S_Byte, S_Long, S_Short, S_Char, S_Dot, \
 S_Lbrace, S_Rbrace, S_Lparen, S_Rparen, S_Semi, S_Comma, S_Identifier, S_LSquare_brac, S_RSquare_brac, S_question_mark, \
-S_punctuation = range(78)
+S_punctuation, S_Character, S_double_quote_string = range(80)
 
 """ single character only symbols """
 symbols = {'{': S_Lbrace, '}': S_Rbrace, '(': S_Lparen, ')': S_Rparen, ';': S_Semi, ',': S_Comma, '[': S_LSquare_brac,
@@ -44,5 +44,5 @@ symbol_values = ['end_of_file', 'op_add', 'op_sub', 'op_mul', 'op_div', 'op_mod'
                  'keyword_final', 'keyword_interface', 'keyword_static', 'keyword_void', 'keyword_class',
                  'keyword_finally', 'keyword_super', 'keyword_while', 'keyword_int', 'keyword_double', 'keyword_float',
                  'keyword_string', 'keyword_boolean', 'keyword_byte', 'keyword_long', 'keyword_short', 'keyword_char',
-                 'left_brace', 'right_brace', 'left_paren', 'right_paren', 'semicolon', 'comma', 'identifier',
-                 'left_square_bracket', 'right_square_bracket', 'dot', 'question_mark', 'punctuation']
+                 'dot', 'left_brace', 'right_brace', 'left_paren', 'right_paren', 'semicolon', 'comma', 'identifier',
+                 'left_square_bracket', 'right_square_bracket', 'question_mark', 'punctuation', 'character', 'string']
